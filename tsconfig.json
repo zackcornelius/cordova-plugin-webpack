@@ -6,6 +6,7 @@
     "outDir": "dist",
     "removeComments": true,
     "strict": true,
+    "strictNullChecks": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
@@ -18,7 +19,8 @@
     "typeRoots": ["./typings", "./node_modules/@types"],
     "sourceMap": true,
     "resolveJsonModule": true,
-    "noErrorTruncation": true
+    "noErrorTruncation": true,
+    "skipLibCheck": true
   },
   "include": ["src/**/*"]
 }

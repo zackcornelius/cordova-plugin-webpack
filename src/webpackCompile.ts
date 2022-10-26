@@ -50,13 +50,13 @@ module.exports = async (ctx: Context) => {
     customWebpackConfig,
   );
   const compiler = webpack(webpackConfig);
-  await new Promise((resolve, reject) => {
+  await new Promise<void>((resolve, reject) => {
     compiler.run((err, stats) => {
       if (err) {
         reject(err);
       }
       console.log(
-        stats.toString({
+        stats?.toString({
           chunks: false,
           colors: true,
         }),
