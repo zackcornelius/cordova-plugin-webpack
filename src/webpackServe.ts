@@ -8,7 +8,8 @@ import yargs from 'yargs/yargs';
 import yargsUnparser from 'yargs-unparser';
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
-import convertArgv from 'webpack-cli/bin/utils/convert-argv';
+//import convertArgv from 'webpack-cli/bin/utils/convert-argv';
+import WebpackCLI from 'webpack-cli'
 import WebpackInjectPlugin from '@bpnetguy/webpack-inject-plugin';
 import is from '@sindresorhus/is';
 import createHTML from 'create-html';
@@ -103,8 +104,16 @@ module.exports = async (ctx: Context) => {
     .options(options.devServer) // set webpack-dev-server yargs options
     .version(getVersion()).argv;
 
+  console.log(webpackArgv)
+
+  const webpackcli = new WebpackCLI()
+
+  const webpackConfigFromArgs = webpackcli.loadConfig({ argv: webpackArgv })
+  console.log(webpackConfigFromArgs)
+
+
   const [customWebpackConfig, customDevServerConfig] = await createConfig(
-    convertArgv(webpackArgv), // create webpack configuration from yargs.argv and webpack.config.js
+    webpackConfigFromArgs, // create webpack configuration from yargs.argv and webpack.config.js
     webpackArgv,
   );
 
