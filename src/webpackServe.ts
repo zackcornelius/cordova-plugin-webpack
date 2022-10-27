@@ -101,7 +101,7 @@ module.exports = async (ctx: Context) => {
 
   const webpackArgv = webpackYargs
     .options(options.webpack) // set webpack yargs options
-    .options(options.devServer) // set webpack-dev-server yargs options
+    // .options(options.devServer) // set webpack-dev-server yargs options
     .version(getVersion()).argv;
 
   console.log(webpackArgv)
