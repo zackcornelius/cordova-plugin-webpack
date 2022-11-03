@@ -115,7 +115,7 @@ module.exports = async (ctx: Context) => {
 
 
   const [customWebpackConfig, customDevServerConfig] = await createConfig(
-    webpackConfigFromArgs, // create webpack configuration from yargs.argv and webpack.config.js
+    webpackConfigFromArgs.options, // create webpack configuration from yargs.argv and webpack.config.js
     createArguments(is.object(pluginArgv.webpack) ? pluginArgv.webpack : {})
   );
 

@@ -51,7 +51,7 @@ module.exports = async (ctx: Context) => {
   //console.log(customWebpackConfig)
 
   const webpackConfig = ([] as webpack.Configuration[]).concat(
-    customWebpackConfig,
+    customWebpackConfig.options,
   );
   const compiler = webpack(webpackConfig);
   await new Promise<void>((resolve, reject) => {
