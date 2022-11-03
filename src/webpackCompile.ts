@@ -43,12 +43,12 @@ module.exports = async (ctx: Context) => {
     .options(options.webpack) // set webpack yargs options
     .version(getVersion()).argv;
 
-  console.log(webpackArgv)
+  //console.log(webpackArgv)
 
   const webpackcli = new WebpackCLI()
 
-  const customWebpackConfig = webpackcli.loadConfig({ argv: webpackArgv })
-  console.log(customWebpackConfig)
+  const customWebpackConfig = await webpackcli.loadConfig({ argv: webpackArgv })
+  //console.log(customWebpackConfig)
 
   const webpackConfig = ([] as webpack.Configuration[]).concat(
     customWebpackConfig,

@@ -220,6 +220,9 @@ module.exports = async (ctx: Context) => {
       });
   });
 
+  console.log("Final webpack config", webpackConfig)
+  console.log("Final devServerConfig", devServerConfig)
+
   const compiler = webpack(webpackConfig);
   const server = new WebpackDevServer(compiler, devServerConfig);
 
