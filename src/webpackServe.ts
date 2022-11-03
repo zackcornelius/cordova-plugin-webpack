@@ -17,7 +17,7 @@ import { Context } from './types';
 // eslint-disable-next-line import/no-named-as-default
 import options from './options';
 import { defaultHost, defaultPort, createConfig } from './utils/webpackHelpers';
-import { createArguments, getVersion } from './utils/yargsHelpers';
+import { createArguments } from './utils/yargsHelpers';
 import ConfigParser from './utils/ConfigParser';
 
 function prepareUrls(protocol: string, host: string, port: number, pathname: string = '/') {
@@ -99,22 +99,24 @@ module.exports = async (ctx: Context) => {
     ),
   );
 
-  const webpackArgv = webpackYargs
-    .options(options.webpack) // set webpack yargs options
-    .options(options.devServer) // set webpack-dev-server yargs options
-    .version(getVersion()).argv;
+  //const webpackArgv = pluginArgv.webpack ?? {}
 
-  console.log(webpackArgv)
+  //const webpackArgv = webpackYargs
+  //  .options(options.webpack) // set webpack yargs options
+  //  .options(options.devServer) // set webpack-dev-server yargs options
+  //  .version(getVersion()).argv;
+
+  //console.log(webpackArgv)
 
   const webpackcli = new WebpackCLI()
 
-  const webpackConfigFromArgs = webpackcli.loadConfig({ argv: webpackArgv })
+  const webpackConfigFromArgs = webpackcli.loadConfig({ argv: webpackYargs })
   console.log(webpackConfigFromArgs)
 
 
   const [customWebpackConfig, customDevServerConfig] = await createConfig(
     webpackConfigFromArgs, // create webpack configuration from yargs.argv and webpack.config.js
-    webpackArgv,
+    createArguments(is.object(pluginArgv.webpack) ? pluginArgv.webpack : {})
   );
 
   const protocol = customDevServerConfig.https ? 'https' : 'http';
