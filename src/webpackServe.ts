@@ -163,7 +163,7 @@ module.exports = async (ctx: Context) => {
         platform,
         'platform_www',
       ),
-      publicPath: platform,
+      publicPath: `/${platform}`,
       watch: true
     })
   })
