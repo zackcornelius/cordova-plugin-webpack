@@ -107,7 +107,8 @@ module.exports = async (ctx: Context) => {
 
   const webpackcli = new WebpackCLI()
 
-  const customWebpackConfig = await webpackcli.loadConfig({ argv: pluginArgv.webpack })
+  const webpackConfigFromArgs = await webpackcli.loadConfig({ argv: pluginArgv.webpack })
+  const customWebpackConfig = webpackConfigFromArgs.options
   const customDevServerConfig = customWebpackConfig.devServer ?? {}
   console.log('Webpack config from args:', customWebpackConfig)
   console.log('Dev server config from args:', customDevServerConfig)
