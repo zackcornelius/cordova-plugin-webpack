@@ -5,19 +5,16 @@ import glob from 'glob';
 import url from 'url';
 import address from 'address';
 import yargs from 'yargs/yargs';
-import yargsUnparser from 'yargs-unparser';
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 //import convertArgv from 'webpack-cli/bin/utils/convert-argv';
 import WebpackCLI from 'webpack-cli'
 import WebpackInjectPlugin from '@bpnetguy/webpack-inject-plugin';
-import is from '@sindresorhus/is';
 import createHTML from 'create-html';
 import { Context } from './types';
 // eslint-disable-next-line import/no-named-as-default
 import options from './options';
-import { defaultHost, defaultPort, createConfig } from './utils/webpackHelpers';
-import { createArguments } from './utils/yargsHelpers';
+import { defaultHost, defaultPort } from './utils/webpackHelpers';
 import ConfigParser from './utils/ConfigParser';
 
 function prepareUrls(protocol: string, host: string, port: number, pathname: string = '/') {
@@ -93,11 +90,11 @@ module.exports = async (ctx: Context) => {
     return;
   }
 
-  const webpackYargs = yargs(
-    yargsUnparser(
-      createArguments(is.object(pluginArgv.webpack) ? pluginArgv.webpack : {}),
-    ),
-  );
+  //const webpackYargs = yargs(
+  //  yargsUnparser(
+  //    createArguments(is.object(pluginArgv.webpack) ? pluginArgv.webpack : {}),
+  //  ),
+  //);
 
   //const webpackArgv = pluginArgv.webpack ?? {}
 
@@ -110,14 +107,11 @@ module.exports = async (ctx: Context) => {
 
   const webpackcli = new WebpackCLI()
 
-  const webpackConfigFromArgs = await webpackcli.loadConfig({ argv: webpackYargs })
-  console.log('Webpack config from args:', webpackConfigFromArgs)
+  const customWebpackConfig = await webpackcli.loadConfig({ argv: pluginArgv.webpack })
+  const customDevServerConfig = customWebpackConfig.devServer ?? {}
+  console.log('Webpack config from args:', customWebpackConfig)
+  console.log('Dev server config from args:', customDevServerConfig)
 
-
-  const [customWebpackConfig, customDevServerConfig] = await createConfig(
-    webpackConfigFromArgs.options, // create webpack configuration from yargs.argv and webpack.config.js
-    createArguments(is.object(pluginArgv.webpack) ? pluginArgv.webpack : {})
-  );
 
   const protocol = customDevServerConfig.https ? 'https' : 'http';
   const host =
