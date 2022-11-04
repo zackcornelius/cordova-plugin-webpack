@@ -7,7 +7,7 @@ import address from 'address';
 import yargs from 'yargs/yargs';
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
-//import convertArgv from 'webpack-cli/bin/utils/convert-argv';
+// import convertArgv from 'webpack-cli/bin/utils/convert-argv';
 import WebpackCLI from 'webpack-cli'
 import WebpackInjectPlugin from '@bpnetguy/webpack-inject-plugin';
 import createHTML from 'create-html';
@@ -27,7 +27,7 @@ function prepareUrls(protocol: string, host: string, port: number, pathname: str
     });
 
   const isUnspecifiedHost = host === '0.0.0.0' || host === '::';
-  let prettyHost, lanUrlForConfig, lanUrlForTerminal;
+  let prettyHost; let lanUrlForConfig; let lanUrlForTerminal;
   if (isUnspecifiedHost) {
     prettyHost = 'localhost';
     try {
@@ -90,29 +90,11 @@ module.exports = async (ctx: Context) => {
     return;
   }
 
-  //const webpackYargs = yargs(
-  //  yargsUnparser(
-  //    createArguments(is.object(pluginArgv.webpack) ? pluginArgv.webpack : {}),
-  //  ),
-  //);
-
-  //const webpackArgv = pluginArgv.webpack ?? {}
-
-  //const webpackArgv = webpackYargs
-  //  .options(options.webpack) // set webpack yargs options
-  //  .options(options.devServer) // set webpack-dev-server yargs options
-  //  .version(getVersion()).argv;
-
-  //console.log(webpackArgv)
-
   const webpackcli = new WebpackCLI()
 
   const webpackConfigFromArgs = await webpackcli.loadConfig({ argv: pluginArgv.webpack })
   const customWebpackConfig = webpackConfigFromArgs.options
   const customDevServerConfig = customWebpackConfig.devServer ?? {}
-  console.log('Webpack config from args:', customWebpackConfig)
-  console.log('Dev server config from args:', customDevServerConfig)
-
 
   const protocol = customDevServerConfig.https ? 'https' : 'http';
   const host =
@@ -149,7 +131,7 @@ module.exports = async (ctx: Context) => {
       ),
     ],
   };
-  let staticConfig = [{
+  const staticConfig = [{
     directory: path.join(ctx.opts.projectRoot, 'www'),
     publicPath: '/',
     watch: true
@@ -179,7 +161,7 @@ module.exports = async (ctx: Context) => {
 
   // HMR
   if (devServerConfig.hot)
-    //WebpackDevServer.addDevServerEntrypoints(webpackConfig, devServerConfig);
+    // WebpackDevServer.addDevServerEntrypoints(webpackConfig, devServerConfig);
 
   targetPlatforms.forEach((platform) => {
     if (platform === 'browser') {
@@ -214,9 +196,6 @@ module.exports = async (ctx: Context) => {
         configXml.write();
       });
   });
-
-  console.log("Final webpack config", webpackConfig)
-  console.log("Final devServerConfig", devServerConfig)
 
   const compiler = webpack(webpackConfig);
   const server = new WebpackDevServer(compiler, devServerConfig);
